@@ -1,4 +1,4 @@
-import { FaGithub, FaLinkedin, FaInstagram } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaInstagram, FaFacebook } from 'react-icons/fa';
 
 const socials = [
   {
@@ -15,6 +15,11 @@ const socials = [
     href: 'https://instagram.com/',
     label: 'Instagram',
     icon: <FaInstagram />,
+  },
+  {
+    href: 'https://facebook.com/',
+    label: 'Facebook',
+    icon: <FaFacebook />,
   },
 ];
 

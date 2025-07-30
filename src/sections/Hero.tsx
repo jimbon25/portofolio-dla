@@ -8,6 +8,19 @@ export default function Hero() {
       <div className="absolute top-4 right-4">
         <ThemeToggle />
       </div>
+      <motion.div
+        className="mb-6"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.7 }}
+      >
+        <img
+          src="/images/profile-placeholder.svg"
+          alt="Profile Placeholder"
+          className="w-36 h-36 md:w-44 md:h-44 rounded-full object-cover border-4 border-primary/30 shadow-lg bg-gray-100 dark:bg-gray-800"
+          draggable={false}
+        />
+      </motion.div>
       <motion.h1
         className="text-4xl md:text-6xl font-bold mb-4"
         initial={{ opacity: 0, y: 40 }}
