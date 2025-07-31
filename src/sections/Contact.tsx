@@ -12,7 +12,7 @@ export default function Contact() {
     e.preventDefault();
     setLoading(true);
     setStatus("");
-    const endpoint = process.env.NODE_ENV === "production"
+    const endpoint = import.meta.env.MODE === "production"
       ? "/.netlify/functions/webhook"
       : "/api/webhook";
     try {
