@@ -12,29 +12,32 @@ export default function Contact() {
     e.preventDefault();
     setLoading(true);
     setStatus("");
+    const endpoint = process.env.NODE_ENV === "production"
+      ? "/.netlify/functions/webhook"
+      : "/api/webhook";
     try {
-      const res = await fetch("/api/webhook", {
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, message }),
       });
-      if (!res.ok) throw new Error("Gagal mengirim pesan");
+      if (!res.ok) throw new Error("Failed to send message");
       const data = await res.json();
       if (data.discord === 'ok' && data.telegram === 'ok') {
-        setStatus("Terkirim ke Discord & Telegram!");
+        setStatus("Sent to Discord & Telegram!");
       } else if (data.discord === 'ok') {
-        setStatus("Terkirim ke Discord!");
+        setStatus("Sent to Discord!");
       } else if (data.telegram === 'ok') {
-        setStatus("Terkirim ke Telegram!");
+        setStatus("Sent to Telegram!");
       } else {
-        setStatus("Gagal mengirim ke platform manapun.");
+        setStatus("Failed to send to any platform.");
       }
       setName(""); setEmail(""); setMessage("");
     } catch (err: unknown) {
       if (err instanceof Error) {
-        setStatus(err.message || "Terjadi error");
+        setStatus(err.message || "An error occurred");
       } else {
-        setStatus("Terjadi error");
+        setStatus("An error occurred");
       }
     } finally {
       setLoading(false);
