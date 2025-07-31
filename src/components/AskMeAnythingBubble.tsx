@@ -74,8 +74,8 @@ function AskMeAnythingBubble() {
               >
                 ×
               </button>
-              <h2 className="text-xl font-bold mb-2 text-primary">Ask Me Anything (Gemini AI)</h2>
-              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">Ask anything, Gemini AI will answer your question below.</p>
+              <h2 className="text-xl font-bold mb-2 text-primary">Ask Me Anything (AI Assistant)</h2>
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">Ask anything, AI Assistant will answer your question below.</p>
               <div className="flex flex-col gap-2 mb-4 max-h-72 overflow-y-auto pr-1">
                 {chat.length === 0 && (
                   <div className="text-gray-400 text-sm text-center">No questions yet. Start the conversation!</div>

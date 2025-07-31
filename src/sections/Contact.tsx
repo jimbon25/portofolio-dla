@@ -97,7 +97,7 @@ export default function Contact() {
           className="px-6 py-3 bg-primary text-white rounded hover:bg-primary-dark transition-colors disabled:opacity-60"
           disabled={loading || !name.trim() || !email.trim() || !message.trim()}
         >
-          {loading ? "Mengirim..." : "Send Message"}
+          {loading ? "Sending..." : "Send Message"}
         </button>
       </form>
       {status && (

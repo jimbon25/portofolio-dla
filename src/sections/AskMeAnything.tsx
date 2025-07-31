@@ -53,7 +53,7 @@ export default function AskMeAnything() {
         viewport={{ once: true }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
-        Ask anything, Gemini AI will answer your question below.
+        Ask anything, AI Assistant will answer your question below.
       </motion.p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 mb-6">
         <input
