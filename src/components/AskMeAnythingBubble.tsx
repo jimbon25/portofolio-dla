@@ -2,18 +2,22 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiMessageCircle } from 'react-icons/fi';
 
-export default function AskMeAnythingBubble() {
+function AskMeAnythingBubble() {
   const [open, setOpen] = useState(false);
   const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  // Q&A chat history: { q: string, a: string | null }
+  const [chat, setChat] = useState<{ q: string; a: string | null }[]>([]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setLoading(true);
     setError("");
-    setAnswer("");
+    setLoading(true);
+    // Add question to chat with null answer (loading)
+    setChat(prev => [...prev, { q: question, a: null }]);
+    const currentIdx = chat.length;
+    setQuestion("");
     const endpoint = import.meta.env.MODE === "production"
       ? "/.netlify/functions/ask-gemini"
       : "/api/ask-gemini";
@@ -25,13 +29,10 @@ export default function AskMeAnythingBubble() {
       });
       if (!res.ok) throw new Error("Failed to process question");
       const data = await res.json();
-      setAnswer(data.answer || "[No answer]");
+      setChat(prev => prev.map((item, i) => i === currentIdx ? { ...item, a: data.answer || "[No answer]" } : item));
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message || "An error occurred");
-      } else {
-        setError("An error occurred");
-      }
+      setChat(prev => prev.map((item, i) => i === currentIdx ? { ...item, a: "[Error: " + (err instanceof Error ? err.message : "Unknown error") + "]" } : item));
+      setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setLoading(false);
     }
@@ -75,7 +76,22 @@ export default function AskMeAnythingBubble() {
               </button>
               <h2 className="text-xl font-bold mb-2 text-primary">Ask Me Anything (Gemini AI)</h2>
               <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">Ask anything, Gemini AI will answer your question below.</p>
-              <form onSubmit={handleSubmit} className="flex flex-col gap-3 mb-4">
+              <div className="flex flex-col gap-2 mb-4 max-h-72 overflow-y-auto pr-1">
+                {chat.length === 0 && (
+                  <div className="text-gray-400 text-sm text-center">No questions yet. Start the conversation!</div>
+                )}
+                {chat.map((item, idx) => (
+                  <div key={idx} className="flex flex-col gap-1">
+                    <div className="self-end bg-primary text-white rounded-lg px-4 py-2 max-w-[80%] text-right text-sm shadow">
+                      {item.q}
+                    </div>
+                    <div className="self-start bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-lg px-4 py-2 max-w-[80%] text-left text-sm border border-primary/20 shadow">
+                      {item.a === null ? <span className="italic text-gray-400">Gemini is typing...</span> : item.a}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                 <input
                   type="text"
                   className="px-4 py-2 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
@@ -94,12 +110,7 @@ export default function AskMeAnythingBubble() {
                 </button>
               </form>
               {error && (
-                <div className="mb-2 text-red-600 dark:text-red-400 text-sm">{error}</div>
-              )}
-              {answer && (
-                <div className="p-4 rounded bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-left whitespace-pre-line border border-primary/20">
-                  {answer}
-                </div>
+                <div className="mt-2 text-red-600 dark:text-red-400 text-sm">{error}</div>
               )}
             </motion.div>
           </motion.div>
@@ -108,3 +119,5 @@ export default function AskMeAnythingBubble() {
     </>
   );
 }
+
+export default AskMeAnythingBubble;
