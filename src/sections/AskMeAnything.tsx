@@ -12,20 +12,23 @@ export default function AskMeAnything() {
     setLoading(true);
     setError("");
     setAnswer("");
+    const endpoint = import.meta.env.MODE === "production"
+      ? "/.netlify/functions/ask-gemini"
+      : "/api/ask-gemini";
     try {
-      const res = await fetch("/api/ask-gemini", {
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question }),
       });
-      if (!res.ok) throw new Error("Gagal memproses pertanyaan");
+      if (!res.ok) throw new Error("Failed to process question");
       const data = await res.json();
       setAnswer(data.answer || "[No answer]");
     } catch (err: unknown) {
       if (err instanceof Error) {
-        setError(err.message || "Terjadi error");
+        setError(err.message || "An error occurred");
       } else {
-        setError("Terjadi error");
+        setError("An error occurred");
       }
     } finally {
       setLoading(false);
