@@ -1,7 +1,6 @@
-// Vercel Serverless Function Example for Gemini API
-import type { VercelRequest, VercelResponse } from '@vercel/node';
-
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+// Vercel/Node Serverless Function Example for Gemini API
+// Use plain req/res types for Vercel serverless compatibility
+export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }

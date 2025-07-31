@@ -28,7 +28,7 @@ function App() {
 
   return (
     <div className="bg-background dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen font-sans">
-      <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-950/80 backdrop-blur border-b border-gray-200 dark:border-gray-800">
+      <header className="sticky top-0 z-50 bg-white/90 dark:bg-gray-950/95 border-b border-gray-200 dark:border-gray-800">
         <nav className="max-w-6xl mx-auto flex items-center justify-between px-4 py-3">
           <span className="font-bold text-xl text-primary">Portfolio</span>
           <ul className="hidden md:flex gap-6">
@@ -78,8 +78,8 @@ function App() {
         <AnimatePresence>
           {menuOpen && (
             <motion.div
-              className="fixed inset-0 z-50 flex items-center justify-center bg-white/40 dark:bg-gray-950/40 backdrop-blur-lg shadow-2xl"
-              style={{ minHeight: '100dvh', minWidth: '100vw' }}
+              className="fixed inset-0 z-50 flex items-center justify-center bg-gray-950 shadow-2xl"
+              style={{ minHeight: '100dvh', minWidth: '100vw', background: '#0a0a14' }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
