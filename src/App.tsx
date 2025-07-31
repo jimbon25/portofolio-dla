@@ -5,7 +5,7 @@ import TechStack from './sections/TechStack';
 import Portfolio from './sections/Portfolio';
 import Experience from './sections/Experience';
 import Contact from './sections/Contact';
-import AskMeAnything from './sections/AskMeAnything';
+import AskMeAnythingBubble from './components/AskMeAnythingBubble';
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiMenu } from 'react-icons/fi';
@@ -198,17 +198,8 @@ function App() {
         >
           <Contact />
         </motion.div>
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={{
-            hidden: { opacity: 0, y: 40 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.5 } },
-          }}
-        >
-          <AskMeAnything />
-        </motion.div>
+        {/* Floating Ask Me Anything Bubble */}
+        <AskMeAnythingBubble />
       </main>
       <footer className="py-8 text-center text-gray-500 dark:text-gray-400 text-sm">
         &copy; {new Date().getFullYear()} Dimas Luis Aditya. All rights reserved.
