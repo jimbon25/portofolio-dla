@@ -24,8 +24,13 @@ export default async function handler(req: any, res: any) {
       })
     });
     const data = await geminiRes.json();
-    res.status(200).json(data);
+    // Try to extract the answer from Gemini API response
+    let answer = "";
+    if (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text) {
+      answer = data.candidates[0].content.parts[0].text;
+    }
+    res.status(200).json({ answer });
   } catch {
-    res.status(500).json({ error: 'Failed to fetch from Gemini API' });
+    res.status(500).json({ answer: "[No answer: Gemini API error]" });
   }
 }

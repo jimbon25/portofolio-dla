@@ -32,14 +32,19 @@ exports.handler = async function(event, context) {
       })
     });
     const data = await geminiRes.json();
+    // Try to extract the answer from Gemini API response
+    let answer = "";
+    if (data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text) {
+      answer = data.candidates[0].content.parts[0].text;
+    }
     return {
       statusCode: 200,
-      body: JSON.stringify(data)
+      body: JSON.stringify({ answer })
     };
   } catch (err) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Failed to fetch from Gemini API' })
+      body: JSON.stringify({ answer: "[No answer: Gemini API error]" })
     };
   }
 };
